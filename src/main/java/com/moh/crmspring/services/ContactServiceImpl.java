@@ -4,10 +4,12 @@ import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ContactServiceImpl implements ContactService {
     private final ContactRepository contactRepository;
 
@@ -17,11 +19,13 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Contact> findAll() {
         return contactRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contact findById(Long id) {
         return contactRepository.findById(id).orElse(null);
     }
