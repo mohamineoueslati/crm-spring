@@ -1,5 +1,6 @@
 package com.moh.crmspring.services;
 
+import com.moh.crmspring.dto.ContactDto;
 import com.moh.crmspring.entities.Contact;
 
 import java.util.List;

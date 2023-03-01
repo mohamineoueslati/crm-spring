@@ -1,13 +1,14 @@
 package com.moh.crmspring.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "activity")
-public class Activity {
+public class Activity implements Serializable {
     public enum ActivityType {
         APPEL, DINER, EMAIL, COMITE_DE_GESTION, REUNION, NOTE
     }

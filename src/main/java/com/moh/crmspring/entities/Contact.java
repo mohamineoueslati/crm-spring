@@ -1,13 +1,15 @@
 package com.moh.crmspring.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "contact")
-public class Contact {
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "Contact.address", attributeNodes = @NamedAttributeNode("address")),
+})
+public class Contact implements Serializable {
     public enum JobTitle {
         CEO, SOFTWARE_ENGINEER
     }
@@ -18,15 +20,12 @@ public class Contact {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    @NotEmpty
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    @NotEmpty
     private String lastName;
 
     @Column(name = "email")
-    @Email
     private String email;
 
     @Column(name = "phone")
@@ -42,8 +41,8 @@ public class Contact {
     @JoinColumn(name = "contact_owner_id")
     private Contact contactOwner;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Address address;
 
     @ManyToMany
@@ -59,7 +58,7 @@ public class Contact {
     }
 
     public void setId(Long id) {
-        id = id;
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -144,6 +143,7 @@ public class Contact {
                 ", phone='" + phone + '\'' +
                 ", company='" + company + '\'' +
                 ", jobTitle=" + jobTitle +
+                ", address=" + address +
                 '}';
     }
 }

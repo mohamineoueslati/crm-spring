@@ -19,7 +19,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Contact> findAll() {
         return contactRepository.findAll();
     }

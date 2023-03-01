@@ -1,18 +1,18 @@
 package com.moh.crmspring.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Serializable {
     public enum Country {
         TUNISIA, ALGERIA, MOROCCO
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long Id;
+    @Column(name = "contact_id")
+    private Long id;
 
     @Column(name = "address")
     private String address;
@@ -29,12 +29,17 @@ public class Address {
     @Column(name = "zip_code")
     private Integer zipCode;
 
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "contact_id")
+    private Contact contact;
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getAddress() {
@@ -77,10 +82,18 @@ public class Address {
         this.zipCode = zipCode;
     }
 
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", country=" + country +
