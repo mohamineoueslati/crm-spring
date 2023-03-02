@@ -1,14 +1,21 @@
 package com.moh.crmspring.entities;
 
+import com.moh.crmspring.dto.ActivityDto;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "activity")
-public class Activity implements Serializable {
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Activity.participants",
+                attributeNodes = @NamedAttributeNode("participants")
+        )
+})
+public class Activity {
     public enum ActivityType {
         APPEL, DINER, EMAIL, COMITE_DE_GESTION, REUNION, NOTE
     }
@@ -38,6 +45,16 @@ public class Activity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
     private Set<Contact> participants;
+
+    public Activity() {}
+
+    public Activity(ActivityDto activityDto) {
+        this.id = activityDto.getId();
+        this.activityType = activityDto.getActivityType();
+        this.subject = activityDto.getSubject();
+        this.date = activityDto.getDate();
+        this.note = activityDto.getNote();
+    }
 
     public Long getId() {
         return id;

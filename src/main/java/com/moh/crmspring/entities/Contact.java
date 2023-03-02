@@ -3,7 +3,6 @@ package com.moh.crmspring.entities;
 import com.moh.crmspring.dto.ContactDto;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -11,7 +10,7 @@ import java.util.Set;
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "Contact.address", attributeNodes = @NamedAttributeNode("address")),
 })
-public class Contact implements Serializable {
+public class Contact {
     public enum JobTitle {
         CEO, SOFTWARE_ENGINEER
     }

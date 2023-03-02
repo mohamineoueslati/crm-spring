@@ -24,6 +24,11 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public List<Contact> findAllByIds(Iterable<Long> ids) {
+        return contactRepository.findAllById(ids);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Contact findById(Long id) {
         return contactRepository.findById(id).orElse(null);

@@ -3,11 +3,10 @@ package com.moh.crmspring.entities;
 import com.moh.crmspring.dto.AddressDto;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "address")
-public class Address implements Serializable {
+public class Address {
     public enum Country {
         TUNISIA, ALGERIA, MOROCCO
     }

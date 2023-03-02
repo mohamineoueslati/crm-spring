@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @SpringBootTest
 class CrmSpringApplicationTests {
@@ -34,6 +32,15 @@ class CrmSpringApplicationTests {
         List<Contact> contacts = contactRepository.findAll();
 
         contacts.forEach(System.out::println);
+    }
+
+    @Test
+    public void testFindAllContactsByIds() {
+        Set<Long> ids = new HashSet<>();
+        ids.add(1L);
+        ids.add(2L);
+        List<Contact> contacts = contactRepository.findAllById(ids);
+        Assertions.assertEquals(2, contacts.size());
     }
 
     @Test
