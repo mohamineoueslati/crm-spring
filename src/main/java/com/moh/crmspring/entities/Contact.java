@@ -1,5 +1,7 @@
 package com.moh.crmspring.entities;
 
+import com.moh.crmspring.dto.ContactDto;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -52,6 +54,19 @@ public class Contact implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
     private Set<Activity> activities;
+
+    public Contact() {}
+
+    public Contact(ContactDto contactDto) {
+        this.id = contactDto.getId();
+        this.firstName = contactDto.getFirstName();
+        this.lastName = contactDto.getLastName();
+        this.email = contactDto.getEmail();
+        this.phone = contactDto.getPhone();
+        this.company = contactDto.getCompany();
+        this.jobTitle = contactDto.getJobTitle();
+        this.address = contactDto.getAddress() != null ? new Address(contactDto.getAddress()) : null;
+    }
 
     public Long getId() {
         return id;

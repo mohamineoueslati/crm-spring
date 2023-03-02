@@ -1,5 +1,7 @@
 package com.moh.crmspring.entities;
 
+import com.moh.crmspring.dto.AddressDto;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -33,6 +35,17 @@ public class Address implements Serializable {
     @MapsId
     @JoinColumn(name = "contact_id")
     private Contact contact;
+
+    public Address() {}
+
+    public  Address(AddressDto addressDto) {
+        this.id = addressDto.getId();
+        this.address = addressDto.getAddress();
+        this.city = addressDto.getCity();
+        this.state = addressDto.getState();
+        this.country = addressDto.getCountry();
+        this.zipCode = addressDto.getZipCode();
+    }
 
     public Long getId() {
         return id;

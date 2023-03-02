@@ -4,7 +4,6 @@ import com.moh.crmspring.dto.ContactDto;
 import com.moh.crmspring.entities.Address;
 import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ContactService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,47 +15,49 @@ import java.util.stream.Collectors;
 @RequestMapping("contacts")
 public class ContactController {
     private final ContactService contactService;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public ContactController(ContactService contactService, ModelMapper modelMapper) {
+    public ContactController(ContactService contactService) {
         this.contactService = contactService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping
     public List<ContactDto> getAllContacts() {
-        return contactService.findAll().stream().map(c -> modelMapper.map(c, ContactDto.class))
-                .collect(Collectors.toList());
+        return contactService.findAll().stream().map(ContactDto::new).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public ContactDto getContact(@PathVariable Long id) {
-        return modelMapper.map(contactService.findById(id), ContactDto.class);
+        return new ContactDto(contactService.findById(id));
     }
 
     @PostMapping
     public ContactDto addContact(@Valid @RequestBody ContactDto contactDto) {
-        Contact contactOwner = contactService.findById(contactDto.getContactOwnerId());
-        Address address = modelMapper.map(contactDto.getAddress(), Address.class);
-        Contact contact = modelMapper.map(contactDto, Contact.class);
-        contact.setContactOwner(contactOwner);
-        address.setContact(contact);
-        contact.setAddress(address);
-
-        return modelMapper.map(contactService.save(contact), ContactDto.class);
+        Contact contact = contactDtoToContact(contactDto);
+        return new ContactDto(contactService.save(contact));
     }
 
     @PutMapping
-    public Contact updateContact(@Valid @RequestBody Contact contact) {
-        return contactService.save(contact);
+    public ContactDto updateContact(@Valid @RequestBody ContactDto contactDto) {
+        Contact contact = contactDtoToContact(contactDto);
+        return new ContactDto(contactService.save(contact));
     }
 
     @DeleteMapping("{id}")
     public void deleteContact(@PathVariable Long id) {
         Contact contact = contactService.findById(id);
-        if (contact != null) {
-            contactService.delete(contact);
-        }
+        if (contact != null) contactService.delete(contact);
+    }
+
+    private Contact contactDtoToContact(ContactDto contactDto) {
+        Contact contact = new Contact(contactDto);
+        Contact contactOwner = null;
+        if (contactDto.getContactOwnerId() != null)
+            contactOwner = contactService.findById(contactDto.getContactOwnerId());
+        contact.setContactOwner(contactOwner);
+        Address address = contact.getAddress();
+        if (address != null) address.setContact(contact);
+
+        return contact;
     }
 }

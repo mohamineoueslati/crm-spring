@@ -20,6 +20,20 @@ public class ContactDto implements Serializable {
     private Long contactOwnerId;
     private AddressDto address;
 
+    public ContactDto() {}
+
+    public ContactDto(Contact contact) {
+        this.id = contact.getId();
+        this.firstName = contact.getFirstName();
+        this.lastName = contact.getLastName();
+        this.email = contact.getEmail();
+        this.phone = contact.getPhone();
+        this.company = contact.getCompany();
+        this.jobTitle = contact.getJobTitle();
+        this.contactOwnerId = contact.getContactOwner() != null ? contact.getContactOwner().getId() : null;
+        this.address = contact.getAddress() != null ? new AddressDto(contact.getAddress()) : null;
+    }
+
     public Long getId() {
         return id;
     }

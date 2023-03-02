@@ -12,6 +12,17 @@ public class AddressDto implements Serializable {
     private String state;
     private Integer zipCode;
 
+    public AddressDto() {}
+
+    public AddressDto(Address address) {
+        this.id = address.getId();
+        this.address = address.getAddress();
+        this.city = address.getCity();
+        this.country = address.getCountry();
+        this.state = address.getState();
+        this.zipCode = address.getZipCode();
+    }
+
     public Long getId() {
         return id;
     }
