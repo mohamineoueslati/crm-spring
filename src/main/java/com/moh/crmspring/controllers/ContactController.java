@@ -1,6 +1,8 @@
 package com.moh.crmspring.controllers;
 
 import com.moh.crmspring.dto.ContactDto;
+import com.moh.crmspring.dto.ContactRequest;
+import com.moh.crmspring.dto.ContactResponse;
 import com.moh.crmspring.entities.Address;
 import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ContactService;
@@ -22,25 +24,25 @@ public class ContactController {
     }
 
     @GetMapping
-    public List<ContactDto> getAllContacts() {
-        return contactService.findAll().stream().map(ContactDto::new).collect(Collectors.toList());
+    public List<ContactResponse> getAllContacts() {
+        return contactService.findAll().stream().map(ContactResponse::new).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ContactDto getContact(@PathVariable Long id) {
-        return new ContactDto(contactService.findById(id));
+    public ContactResponse getContact(@PathVariable Long id) {
+        return new ContactResponse(contactService.findById(id));
     }
 
     @PostMapping
-    public ContactDto addContact(@Valid @RequestBody ContactDto contactDto) {
-        Contact contact = contactDtoToContact(contactDto);
-        return new ContactDto(contactService.save(contact));
+    public ContactResponse addContact(@Valid @RequestBody ContactRequest contactRequest) {
+        Contact contact = contactRequestToContact(contactRequest);
+        return new ContactResponse(contactService.save(contact));
     }
 
     @PutMapping
-    public ContactDto updateContact(@Valid @RequestBody ContactDto contactDto) {
-        Contact contact = contactDtoToContact(contactDto);
-        return new ContactDto(contactService.save(contact));
+    public ContactResponse updateContact(@Valid @RequestBody ContactRequest contactRequest) {
+        Contact contact = contactRequestToContact(contactRequest);
+        return new ContactResponse(contactService.save(contact));
     }
 
     @DeleteMapping("{id}")
@@ -49,11 +51,11 @@ public class ContactController {
         if (contact != null) contactService.delete(contact);
     }
 
-    private Contact contactDtoToContact(ContactDto contactDto) {
-        Contact contact = new Contact(contactDto);
+    private Contact contactRequestToContact(ContactRequest contactRequest) {
+        Contact contact = new Contact(contactRequest);
         Contact contactOwner = null;
-        if (contactDto.getContactOwnerId() != null)
-            contactOwner = contactService.findById(contactDto.getContactOwnerId());
+        if (contactRequest.getContactOwnerId() != null)
+            contactOwner = contactService.findById(contactRequest.getContactOwnerId());
         contact.setContactOwner(contactOwner);
         Address address = contact.getAddress();
         if (address != null) address.setContact(contact);

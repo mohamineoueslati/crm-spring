@@ -5,18 +5,15 @@ import com.moh.crmspring.entities.Activity;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-public class ActivityDto implements Serializable {
-    private Long id;
+public abstract class ActivityDto implements Serializable {
+    protected Long id;
     @NotNull
-    private Date date;
+    protected Date date;
     @NotNull
-    private Activity.ActivityType activityType;
-    private String subject;
-    private String note;
-    private Set<Long> participantsIds;
+    protected Activity.ActivityType activityType;
+    protected String subject;
+    protected String note;
 
     public ActivityDto() {
     }
@@ -27,8 +24,6 @@ public class ActivityDto implements Serializable {
         this.activityType = activity.getActivityType();
         this.subject = activity.getSubject();
         this.note = activity.getNote();
-        this.participantsIds = new HashSet<>();
-        activity.getParticipants().forEach(p -> participantsIds.add(p.getId()));
     }
 
     public Long getId() {
@@ -71,14 +66,6 @@ public class ActivityDto implements Serializable {
         this.note = note;
     }
 
-    public Set<Long> getParticipantsIds() {
-        return participantsIds;
-    }
-
-    public void setParticipantsIds(Set<Long> participantsIds) {
-        this.participantsIds = participantsIds;
-    }
-
     @Override
     public String toString() {
         return "ActivityDto{" +
@@ -87,7 +74,6 @@ public class ActivityDto implements Serializable {
                 ", activityType=" + activityType +
                 ", subject='" + subject + '\'' +
                 ", note='" + note + '\'' +
-                ", participantsIds=" + participantsIds +
                 '}';
     }
 }

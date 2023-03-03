@@ -94,4 +94,10 @@ class CrmSpringApplicationTests {
 
         activityRepository.save(activity);
     }
+
+    @Test
+    public void testFindActivityById() {
+        Activity activity = activityRepository.findById(8L).orElse(null);
+        Assertions.assertNotNull(activity);
+    }
 }

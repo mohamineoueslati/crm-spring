@@ -1,6 +1,6 @@
 package com.moh.crmspring.entities;
 
-import com.moh.crmspring.dto.ActivityDto;
+import com.moh.crmspring.dto.ActivityRequest;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -48,12 +48,12 @@ public class Activity {
 
     public Activity() {}
 
-    public Activity(ActivityDto activityDto) {
-        this.id = activityDto.getId();
-        this.activityType = activityDto.getActivityType();
-        this.subject = activityDto.getSubject();
-        this.date = activityDto.getDate();
-        this.note = activityDto.getNote();
+    public Activity(ActivityRequest activityRequest) {
+        this.id = activityRequest.getId();
+        this.activityType = activityRequest.getActivityType();
+        this.subject = activityRequest.getSubject();
+        this.date = activityRequest.getDate();
+        this.note = activityRequest.getNote();
     }
 
     public Long getId() {

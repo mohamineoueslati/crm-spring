@@ -6,19 +6,18 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
-public class ContactDto implements Serializable {
-    private Long id;
+public abstract class ContactDto implements Serializable {
+    protected Long id;
     @NotEmpty
-    private String firstName;
+    protected String firstName;
     @NotEmpty
-    private String lastName;
+    protected String lastName;
     @Email
-    private String email;
-    private String phone;
-    private String company;
-    private Contact.JobTitle jobTitle;
-    private Long contactOwnerId;
-    private AddressDto address;
+    protected String email;
+    protected String phone;
+    protected String company;
+    protected Contact.JobTitle jobTitle;
+    protected AddressDto address;
 
     public ContactDto() {}
 
@@ -30,7 +29,6 @@ public class ContactDto implements Serializable {
         this.phone = contact.getPhone();
         this.company = contact.getCompany();
         this.jobTitle = contact.getJobTitle();
-        this.contactOwnerId = contact.getContactOwner() != null ? contact.getContactOwner().getId() : null;
         this.address = contact.getAddress() != null ? new AddressDto(contact.getAddress()) : null;
     }
 
@@ -82,14 +80,6 @@ public class ContactDto implements Serializable {
         this.company = company;
     }
 
-    public Long getContactOwnerId() {
-        return contactOwnerId;
-    }
-
-    public void setContactOwnerId(Long contactOwnerId) {
-        this.contactOwnerId = contactOwnerId;
-    }
-
     public AddressDto getAddress() {
         return address;
     }
@@ -115,7 +105,6 @@ public class ContactDto implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", company='" + company + '\'' +
-                ", contactOwnerId=" + contactOwnerId +
                 ", address=" + address +
                 '}';
     }

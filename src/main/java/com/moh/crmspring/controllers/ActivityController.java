@@ -1,6 +1,7 @@
 package com.moh.crmspring.controllers;
 
-import com.moh.crmspring.dto.ActivityDto;
+import com.moh.crmspring.dto.ActivityRequest;
+import com.moh.crmspring.dto.ActivityResponse;
 import com.moh.crmspring.entities.Activity;
 import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ActivityService;
@@ -27,25 +28,25 @@ public class ActivityController {
     }
 
     @GetMapping
-    public List<ActivityDto> getAllActivities() {
-        return activityService.findAll().stream().map(ActivityDto::new).collect(Collectors.toList());
+    public List<ActivityResponse> getAllActivities() {
+        return activityService.findAll().stream().map(ActivityResponse::new).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ActivityDto getActivity(@PathVariable Long id) {
-        return new ActivityDto(activityService.findById(id));
+    public ActivityResponse getActivity(@PathVariable Long id) {
+        return new ActivityResponse(activityService.findById(id));
     }
 
     @PostMapping
-    public ActivityDto addActivity(@Valid @RequestBody ActivityDto activityDto) {
-        Activity activity = activityDtoToActivity(activityDto);
-        return new ActivityDto(activityService.save(activity));
+    public ActivityResponse addActivity(@Valid @RequestBody ActivityRequest activityRequest) {
+        Activity activity = activityRequestToActivity(activityRequest);
+        return new ActivityResponse(activityService.save(activity));
     }
 
     @PutMapping
-    public ActivityDto updateActivity(@Valid @RequestBody ActivityDto activityDto) {
-        Activity activity = activityDtoToActivity(activityDto);
-        return new ActivityDto(activityService.save(activity));
+    public ActivityResponse updateActivity(@Valid @RequestBody ActivityRequest activityRequest) {
+        Activity activity = activityRequestToActivity(activityRequest);
+        return new ActivityResponse(activityService.save(activity));
     }
 
     @DeleteMapping("{id}")
@@ -56,12 +57,12 @@ public class ActivityController {
         }
     }
 
-    private Activity activityDtoToActivity(ActivityDto activityDto) {
+    private Activity activityRequestToActivity(ActivityRequest activityRequest) {
         Set<Contact> participants = new HashSet<>();
-        if (activityDto.getParticipantsIds() != null)
-            participants = new HashSet<>(contactService.findAllByIds(activityDto.getParticipantsIds()));
+        if (activityRequest.getParticipantsIds() != null)
+            participants = new HashSet<>(contactService.findAllByIds(activityRequest.getParticipantsIds()));
 
-        Activity activity = new Activity(activityDto);
+        Activity activity = new Activity(activityRequest);
         activity.setParticipants(participants);
 
         return activity;

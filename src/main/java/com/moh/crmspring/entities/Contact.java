@@ -1,6 +1,6 @@
 package com.moh.crmspring.entities;
 
-import com.moh.crmspring.dto.ContactDto;
+import com.moh.crmspring.dto.ContactRequest;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -54,17 +54,18 @@ public class Contact {
     )
     private Set<Activity> activities;
 
-    public Contact() {}
+    public Contact() {
+    }
 
-    public Contact(ContactDto contactDto) {
-        this.id = contactDto.getId();
-        this.firstName = contactDto.getFirstName();
-        this.lastName = contactDto.getLastName();
-        this.email = contactDto.getEmail();
-        this.phone = contactDto.getPhone();
-        this.company = contactDto.getCompany();
-        this.jobTitle = contactDto.getJobTitle();
-        this.address = contactDto.getAddress() != null ? new Address(contactDto.getAddress()) : null;
+    public Contact(ContactRequest contactRequest) {
+        this.id = contactRequest.getId();
+        this.firstName = contactRequest.getFirstName();
+        this.lastName = contactRequest.getLastName();
+        this.email = contactRequest.getEmail();
+        this.phone = contactRequest.getPhone();
+        this.company = contactRequest.getCompany();
+        this.jobTitle = contactRequest.getJobTitle();
+        this.address = contactRequest.getAddress() != null ? new Address(contactRequest.getAddress()) : null;
     }
 
     public Long getId() {
