@@ -15,4 +15,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     @EntityGraph(value = "Activity.participants")
     Optional<Activity> findById(Long id);
+
+    @EntityGraph(value = "Activity.participants")
+    List<Activity> findAllById(Iterable<Long> ids);
 }

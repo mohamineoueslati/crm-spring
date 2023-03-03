@@ -19,7 +19,8 @@ public abstract class ContactDto implements Serializable {
     protected Contact.JobTitle jobTitle;
     protected AddressDto address;
 
-    public ContactDto() {}
+    public ContactDto() {
+    }
 
     public ContactDto(Contact contact) {
         this.id = contact.getId();

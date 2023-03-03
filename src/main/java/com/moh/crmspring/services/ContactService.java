@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface ContactService {
     List<Contact> findAll();
+
     List<Contact> findAllByIds(Iterable<Long> ids);
+
     Contact findById(Long id);
+
     Contact save(Contact contact);
+
     void delete(Contact contact);
 }

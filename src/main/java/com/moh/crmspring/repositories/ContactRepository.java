@@ -12,11 +12,13 @@ import java.util.Optional;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    @EntityGraph(value = "Contact.address")
+    @EntityGraph(value = "Contact")
     List<Contact> findAll();
-    @EntityGraph(value = "Contact.address")
+
+    @EntityGraph(value = "Contact")
     List<Contact> findAllById(Iterable<Long> ids);
-    @EntityGraph(value = "Contact.address")
+
+    @EntityGraph(value = "Contact")
     Optional<Contact> findById(Long id);
 
     @Modifying

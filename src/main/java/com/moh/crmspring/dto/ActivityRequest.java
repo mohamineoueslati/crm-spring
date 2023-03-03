@@ -5,7 +5,8 @@ import java.util.Set;
 public class ActivityRequest extends ActivityDto {
     protected Set<Long> participantsIds;
 
-    public ActivityRequest() {}
+    public ActivityRequest() {
+    }
 
     public Set<Long> getParticipantsIds() {
         return participantsIds;

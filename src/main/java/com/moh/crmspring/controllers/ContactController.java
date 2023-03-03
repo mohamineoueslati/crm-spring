@@ -1,6 +1,5 @@
 package com.moh.crmspring.controllers;
 
-import com.moh.crmspring.dto.ContactDto;
 import com.moh.crmspring.dto.ContactRequest;
 import com.moh.crmspring.dto.ContactResponse;
 import com.moh.crmspring.entities.Address;

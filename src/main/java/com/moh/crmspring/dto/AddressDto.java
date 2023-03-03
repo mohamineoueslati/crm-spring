@@ -12,7 +12,8 @@ public class AddressDto implements Serializable {
     private String state;
     private Integer zipCode;
 
-    public AddressDto() {}
+    public AddressDto() {
+    }
 
     public AddressDto(Address address) {
         this.id = address.getId();

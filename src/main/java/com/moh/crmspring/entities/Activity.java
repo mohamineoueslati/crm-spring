@@ -19,6 +19,7 @@ public class Activity {
     public enum ActivityType {
         APPEL, DINER, EMAIL, COMITE_DE_GESTION, REUNION, NOTE
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -46,7 +47,8 @@ public class Activity {
     )
     private Set<Contact> participants;
 
-    public Activity() {}
+    public Activity() {
+    }
 
     public Activity(ActivityRequest activityRequest) {
         this.id = activityRequest.getId();

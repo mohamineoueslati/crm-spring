@@ -1,20 +1,19 @@
 package com.moh.crmspring;
 
-import com.moh.crmspring.dto.ContactDto;
 import com.moh.crmspring.entities.Activity;
 import com.moh.crmspring.entities.Address;
 import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.repositories.ActivityRepository;
 import com.moh.crmspring.repositories.ContactRepository;
-import com.moh.crmspring.services.ActivityService;
-import com.moh.crmspring.services.ContactService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 class CrmSpringApplicationTests {

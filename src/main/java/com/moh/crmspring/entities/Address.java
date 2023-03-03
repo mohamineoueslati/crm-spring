@@ -35,9 +35,10 @@ public class Address {
     @JoinColumn(name = "contact_id")
     private Contact contact;
 
-    public Address() {}
+    public Address() {
+    }
 
-    public  Address(AddressDto addressDto) {
+    public Address(AddressDto addressDto) {
         this.id = addressDto.getId();
         this.address = addressDto.getAddress();
         this.city = addressDto.getCity();

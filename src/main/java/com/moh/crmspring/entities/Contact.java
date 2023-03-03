@@ -8,7 +8,10 @@ import java.util.Set;
 @Entity
 @Table(name = "contact")
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "Contact.address", attributeNodes = @NamedAttributeNode("address")),
+        @NamedEntityGraph(name = "Contact", attributeNodes = {
+                @NamedAttributeNode("address"),
+                @NamedAttributeNode("activities")
+        }),
 })
 public class Contact {
     public enum JobTitle {
@@ -26,7 +29,7 @@ public class Contact {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone")
