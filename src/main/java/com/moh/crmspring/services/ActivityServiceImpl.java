@@ -30,6 +30,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<Activity> findActivitiesByParticipantId(Long id) {
+        return activityRepository.findActivitiesByParticipantId(id);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Activity findById(Long id) {
         return activityRepository.findById(id).orElse(null);

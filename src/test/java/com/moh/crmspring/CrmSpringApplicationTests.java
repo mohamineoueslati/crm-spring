@@ -43,6 +43,13 @@ class CrmSpringApplicationTests {
     }
 
     @Test
+    public void testFindAllContactActivities() {
+        List<Activity> activities = activityRepository.findActivitiesByParticipantId(33L);
+
+        Assertions.assertEquals(2, activities.size());
+    }
+
+    @Test
     public void testAddContact1() {
         Address address = new Address();
         address.setAddress("rue anter cité hached");

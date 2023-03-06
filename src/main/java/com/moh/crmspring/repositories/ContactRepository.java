@@ -12,15 +12,15 @@ import java.util.Optional;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address left join fetch c.activities")
+            "left join fetch c.address")
     List<Contact> findAll();
 
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address left join fetch c.activities where c.id in :ids")
+            "left join fetch c.address where c.id in :ids")
     List<Contact> findAllById(Iterable<Long> ids);
 
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address left join fetch c.activities where c.id = :id")
+            "left join fetch c.address where c.id = :id")
     Optional<Contact> findById(Long id);
 
     @Modifying

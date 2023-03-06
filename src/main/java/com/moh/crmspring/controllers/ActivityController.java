@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,12 +28,8 @@ public class ActivityController {
     }
 
     @GetMapping
-    public List<ActivityResponse> getAllActivities(@RequestParam(required = false) Long[] ids) {
-        if (ids == null)
-            return activityService.findAll().stream().map(ActivityResponse::new).collect(Collectors.toList());
-
-        return activityService.findAllByIds(Arrays.asList(ids)).stream().map(ActivityResponse::new)
-                .collect(Collectors.toList());
+    public List<ActivityResponse> getAllActivities() {
+        return activityService.findAll().stream().map(ActivityResponse::new).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")

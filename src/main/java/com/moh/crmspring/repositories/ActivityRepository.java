@@ -11,16 +11,28 @@ import java.util.Optional;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     @Query("select distinct a " +
-            "from Activity a left join fetch a.participants p left join fetch p.activities left join fetch p.address")
+            "from Activity a " +
+            "left join fetch a.participants p " +
+            "left join fetch p.address")
     List<Activity> findAll();
 
     @Query("select distinct a " +
             "from Activity a " +
-            "left join fetch a.participants p left join fetch p.activities left join fetch p.address where a.id = :id")
+            "left join fetch a.participants p " +
+            "left join fetch p.address " +
+            "where a.id = :id")
     Optional<Activity> findById(Long id);
 
     @Query("select distinct a " +
             "from Activity a " +
-            "left join fetch a.participants p left join fetch p.activities left join fetch p.address where a.id in :ids")
+            "left join fetch a.participants p " +
+            "left join fetch p.address " +
+            "where a.id in :ids")
     List<Activity> findAllById(Iterable<Long> ids);
+
+    @Query("select distinct a from Activity a " +
+            "left join fetch a.participants p " +
+            "left join fetch p.address " +
+            "where a.id in ( select a.id from Activity a join a.participants p where p.id = :contactId)")
+    List<Activity> findActivitiesByParticipantId(Long contactId);
 }

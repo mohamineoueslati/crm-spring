@@ -1,9 +1,11 @@
 package com.moh.crmspring.controllers;
 
+import com.moh.crmspring.dto.ActivityResponse;
 import com.moh.crmspring.dto.ContactRequest;
 import com.moh.crmspring.dto.ContactResponse;
 import com.moh.crmspring.entities.Address;
 import com.moh.crmspring.entities.Contact;
+import com.moh.crmspring.services.ActivityService;
 import com.moh.crmspring.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("contacts")
 public class ContactController {
     private final ContactService contactService;
+    private final ActivityService activityService;
 
     @Autowired
-    public ContactController(ContactService contactService) {
+    public ContactController(ContactService contactService, ActivityService activityService) {
         this.contactService = contactService;
+        this.activityService = activityService;
     }
 
     @GetMapping
@@ -30,6 +34,12 @@ public class ContactController {
     @GetMapping("{id}")
     public ContactResponse getContact(@PathVariable Long id) {
         return new ContactResponse(contactService.findById(id));
+    }
+
+    @GetMapping("{id}/activities")
+    public List<ActivityResponse> getContactActivities(@PathVariable Long id) {
+        return activityService.findActivitiesByParticipantId(id).stream().map(ActivityResponse::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping

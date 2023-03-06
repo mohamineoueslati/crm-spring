@@ -8,6 +8,7 @@ public interface ActivityService {
     List<Activity> findAll();
 
     List<Activity> findAllByIds(Iterable<Long> ids);
+    List<Activity> findActivitiesByParticipantId(Long id);
 
     Activity findById(Long id);
 
