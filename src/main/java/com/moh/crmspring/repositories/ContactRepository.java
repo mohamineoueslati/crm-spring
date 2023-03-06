@@ -1,7 +1,6 @@
 package com.moh.crmspring.repositories;
 
 import com.moh.crmspring.entities.Contact;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,13 +11,16 @@ import java.util.Optional;
 
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    @EntityGraph(value = "Contact")
+    @Query("select distinct c from Contact c " +
+            "left join fetch c.address left join fetch c.activities")
     List<Contact> findAll();
 
-    @EntityGraph(value = "Contact")
+    @Query("select distinct c from Contact c " +
+            "left join fetch c.address left join fetch c.activities where c.id in :ids")
     List<Contact> findAllById(Iterable<Long> ids);
 
-    @EntityGraph(value = "Contact")
+    @Query("select distinct c from Contact c " +
+            "left join fetch c.address left join fetch c.activities where c.id = :id")
     Optional<Contact> findById(Long id);
 
     @Modifying

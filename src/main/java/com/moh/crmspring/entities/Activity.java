@@ -9,12 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "activity")
-@NamedEntityGraphs({
-        @NamedEntityGraph(
-                name = "Activity.participants",
-                attributeNodes = @NamedAttributeNode("participants")
-        )
-})
 public class Activity {
     public enum ActivityType {
         APPEL, DINER, EMAIL, COMITE_DE_GESTION, REUNION, NOTE

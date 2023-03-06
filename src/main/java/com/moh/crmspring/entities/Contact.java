@@ -7,12 +7,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "contact")
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = "Contact", attributeNodes = {
-                @NamedAttributeNode("address"),
-                @NamedAttributeNode("activities")
-        }),
-})
 public class Contact {
     public enum JobTitle {
         CEO, SOFTWARE_ENGINEER
