@@ -41,8 +41,17 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact save(Contact contact) {
-        if (contactRepository.existsByEmail(contact.getEmail()))
-            throw new DuplicatedEntityException("Contact with email " + contact.getEmail() + " already exists.");
+        if (contact.getId() == null) {
+            if (existsByEmail(contact.getEmail()))
+                throw new DuplicatedEntityException("Contact with email " + contact.getEmail() + " already exists.");
+        } else {
+            String email = contactRepository.selectContactEmail(contact.getId());
+            boolean sameEmail = email.equals(contact.getEmail());
+            if (!sameEmail && existsByEmail(contact.getEmail())) {
+                throw new DuplicatedEntityException("Contact with email " + contact.getEmail() + " already exists.");
+            }
+        }
+
         return contactRepository.save(contact);
     }
 
@@ -50,5 +59,10 @@ public class ContactServiceImpl implements ContactService {
     public void delete(Contact contact) {
         contactRepository.delete(contact);
         contactRepository.setContactOwnerToNull(contact.getId());
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return contactRepository.existsByEmail(email);
     }
 }

@@ -30,6 +30,9 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     boolean existsByEmail(String email);
 
+    @Query("select c.email from Contact c where c.id = :id")
+    String selectContactEmail(Long id);
+
     @Modifying
     @Query(value = "update Contact c set c.contactOwner = null where c.contactOwner.id = :id")
     void setContactOwnerToNull(Long id);
