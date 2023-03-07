@@ -3,6 +3,7 @@ package com.moh.crmspring.entities;
 import com.moh.crmspring.dto.ContactRequest;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "contact")
@@ -41,6 +42,14 @@ public class Contact {
     @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Address address;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "activity_contact",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
+    private Set<Activity> activities;
 
     public Contact() {
     }
@@ -126,6 +135,14 @@ public class Contact {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 
     @Override
