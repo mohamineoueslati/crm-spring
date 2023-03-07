@@ -12,16 +12,23 @@ import java.util.Optional;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address")
+            "left join fetch c.address " +
+            "left join fetch c.contactOwner")
     List<Contact> findAll();
 
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address where c.id in :ids")
+            "left join fetch c.address " +
+            "left join fetch c.contactOwner " +
+            "where c.id in :ids")
     List<Contact> findAllById(Iterable<Long> ids);
 
     @Query("select distinct c from Contact c " +
-            "left join fetch c.address where c.id = :id")
+            "left join fetch c.address " +
+            "left join fetch c.contactOwner " +
+            "where c.id = :id")
     Optional<Contact> findById(Long id);
+
+    boolean existsByEmail(String email);
 
     @Modifying
     @Query(value = "update Contact c set c.contactOwner = null where c.contactOwner.id = :id")

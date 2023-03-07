@@ -34,7 +34,7 @@ public class Contact {
     @Enumerated(EnumType.STRING)
     private JobTitle jobTitle;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_owner_id")
     private Contact contactOwner;
 

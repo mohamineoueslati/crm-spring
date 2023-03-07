@@ -33,7 +33,7 @@ public class Activity {
     @Column(name = "note")
     private String note;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "activity_contact",
             joinColumns = @JoinColumn(name = "activity_id"),
