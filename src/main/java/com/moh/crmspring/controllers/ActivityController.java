@@ -51,8 +51,6 @@ public class ActivityController {
     @DeleteMapping("{id}")
     public void deleteActivity(@PathVariable Long id) {
         Activity activity = activityService.findById(id);
-        if (activity != null) {
-            activityService.delete(activity);
-        }
+        activityService.delete(activity);
     }
 }

@@ -3,7 +3,6 @@ package com.moh.crmspring.controllers;
 import com.moh.crmspring.dto.ActivityResponse;
 import com.moh.crmspring.dto.ContactRequest;
 import com.moh.crmspring.dto.ContactResponse;
-import com.moh.crmspring.entities.Address;
 import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ActivityService;
 import com.moh.crmspring.services.ContactService;
@@ -62,6 +61,6 @@ public class ContactController {
     @DeleteMapping("{id}")
     public void deleteContact(@PathVariable Long id) {
         Contact contact = contactService.findById(id);
-        if (contact != null) contactService.delete(contact);
+        contactService.delete(contact);
     }
 }
