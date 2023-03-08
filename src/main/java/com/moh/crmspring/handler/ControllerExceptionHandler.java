@@ -15,7 +15,7 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleDuplicateUser(DuplicatedEntityException e) {
+    public ResponseEntity<ErrorResponse> handleDuplicatedEntityException(DuplicatedEntityException e) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.CONFLICT.value(),
                 e.getMessage()
