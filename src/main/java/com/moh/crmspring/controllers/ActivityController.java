@@ -3,50 +3,49 @@ package com.moh.crmspring.controllers;
 import com.moh.crmspring.dto.ActivityRequest;
 import com.moh.crmspring.dto.ActivityResponse;
 import com.moh.crmspring.entities.Activity;
-import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ActivityService;
-import com.moh.crmspring.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("activities")
 public class ActivityController {
     private final ActivityService activityService;
-    private final ContactService contactService;
+    private final ConversionService conversionService;
 
     @Autowired
-    public ActivityController(ActivityService activityService, ContactService contactService) {
+    public ActivityController(ActivityService activityService, ConversionService conversionService) {
         this.activityService = activityService;
-        this.contactService = contactService;
+        this.conversionService = conversionService;
     }
 
     @GetMapping
     public List<ActivityResponse> getAllActivities() {
-        return activityService.findAll().stream().map(ActivityResponse::new).collect(Collectors.toList());
+        return activityService.findAll().stream()
+                .map(activity ->  conversionService.convert(activity, ActivityResponse.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public ActivityResponse getActivity(@PathVariable Long id) {
-        return new ActivityResponse(activityService.findById(id));
+        return conversionService.convert(activityService.findById(id), ActivityResponse.class);
     }
 
     @PostMapping
     public ActivityResponse addActivity(@Valid @RequestBody ActivityRequest activityRequest) {
-        Activity activity = activityRequestToActivity(activityRequest);
-        return new ActivityResponse(activityService.save(activity));
+        Activity activity = conversionService.convert(activityRequest, Activity.class);
+        return conversionService.convert(activityService.save(activity), ActivityResponse.class);
     }
 
     @PutMapping
     public ActivityResponse updateActivity(@Valid @RequestBody ActivityRequest activityRequest) {
-        Activity activity = activityRequestToActivity(activityRequest);
-        return new ActivityResponse(activityService.save(activity));
+        Activity activity = conversionService.convert(activityRequest, Activity.class);
+        return conversionService.convert(activityService.save(activity), ActivityResponse.class);
     }
 
     @DeleteMapping("{id}")
@@ -55,16 +54,5 @@ public class ActivityController {
         if (activity != null) {
             activityService.delete(activity);
         }
-    }
-
-    private Activity activityRequestToActivity(ActivityRequest activityRequest) {
-        Set<Contact> participants = new HashSet<>();
-        if (activityRequest.getParticipantsIds() != null)
-            participants = new HashSet<>(contactService.findAllByIds(activityRequest.getParticipantsIds()));
-
-        Activity activity = new Activity(activityRequest);
-        activity.setParticipants(participants);
-
-        return activity;
     }
 }

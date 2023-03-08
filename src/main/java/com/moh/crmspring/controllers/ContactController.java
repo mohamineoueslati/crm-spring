@@ -8,6 +8,7 @@ import com.moh.crmspring.entities.Contact;
 import com.moh.crmspring.services.ActivityService;
 import com.moh.crmspring.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,21 +20,25 @@ import java.util.stream.Collectors;
 public class ContactController {
     private final ContactService contactService;
     private final ActivityService activityService;
+    private final ConversionService conversionService;
 
     @Autowired
-    public ContactController(ContactService contactService, ActivityService activityService) {
+    public ContactController(ContactService contactService, ActivityService activityService, ConversionService conversionService) {
         this.contactService = contactService;
         this.activityService = activityService;
+        this.conversionService = conversionService;
     }
 
     @GetMapping
     public List<ContactResponse> getAllContacts() {
-        return contactService.findAll().stream().map(ContactResponse::new).collect(Collectors.toList());
+        return contactService.findAll().stream()
+                .map(contact -> conversionService.convert(contact, ContactResponse.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public ContactResponse getContact(@PathVariable Long id) {
-        return new ContactResponse(contactService.findById(id));
+        return conversionService.convert(contactService.findById(id), ContactResponse.class);
     }
 
     @GetMapping("{id}/activities")
@@ -44,31 +49,19 @@ public class ContactController {
 
     @PostMapping
     public ContactResponse addContact(@Valid @RequestBody ContactRequest contactRequest) {
-        Contact contact = contactRequestToContact(contactRequest);
-        return new ContactResponse(contactService.save(contact));
+        Contact contact = conversionService.convert(contactRequest, Contact.class);
+        return conversionService.convert(contactService.save(contact), ContactResponse.class);
     }
 
     @PutMapping
     public ContactResponse updateContact(@Valid @RequestBody ContactRequest contactRequest) {
-        Contact contact = contactRequestToContact(contactRequest);
-        return new ContactResponse(contactService.save(contact));
+        Contact contact = conversionService.convert(contactRequest, Contact.class);
+        return conversionService.convert(contactService.save(contact), ContactResponse.class);
     }
 
     @DeleteMapping("{id}")
     public void deleteContact(@PathVariable Long id) {
         Contact contact = contactService.findById(id);
         if (contact != null) contactService.delete(contact);
-    }
-
-    private Contact contactRequestToContact(ContactRequest contactRequest) {
-        Contact contact = new Contact(contactRequest);
-        Contact contactOwner = null;
-        if (contactRequest.getContactOwnerId() != null)
-            contactOwner = contactService.findById(contactRequest.getContactOwnerId());
-        contact.setContactOwner(contactOwner);
-        Address address = contact.getAddress();
-        if (address != null) address.setContact(contact);
-
-        return contact;
     }
 }

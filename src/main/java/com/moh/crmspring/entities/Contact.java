@@ -1,8 +1,6 @@
 package com.moh.crmspring.entities;
 
 import com.moh.crmspring.dto.ContactRequest;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Set;
